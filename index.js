@@ -21,7 +21,6 @@ async function run() {
         const serviceCollection = client.db('petPow').collection('services');
         const reviewCollection = client.db('petPow').collection('reviews');
 
-        //get all data's
         app.get('/services', async (req, res) => {
             const query = {};
             const cursor = serviceCollection.find(query);
@@ -29,7 +28,6 @@ async function run() {
             res.send(services);
         });
 
-        //get data by id
         app.get('/services/:id', async(req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
@@ -38,21 +36,19 @@ async function run() {
         })
 
         //add data
+
         app.post('/services', async(req, res) =>{
             const oneservice = req.body;
             const result = await serviceCollection.insertOne(oneservice);
             res.send(result);
         })
 
-        // send data
         app.post('/reviews', async(req, res) =>{
             const sendreview = req.body;
             const result = await reviewCollection.insertOne(sendreview);
             res.send(result);
         })
 
-
-        //get data by email
         app.get('/reviews', async(req, res) =>{
             let query = {};
             if(req.query.email){
@@ -62,7 +58,7 @@ async function run() {
             }
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
-            res.send(reviews);
+            res.send(reviews)
         })
 
     }
