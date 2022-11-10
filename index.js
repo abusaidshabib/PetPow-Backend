@@ -21,6 +21,7 @@ async function run() {
         const serviceCollection = client.db('petPow').collection('services');
         const reviewCollection = client.db('petPow').collection('reviews');
 
+        // load allservices
         app.get('/services', async (req, res) => {
             const query = {};
             const sort = {index: -1}
@@ -29,6 +30,7 @@ async function run() {
             res.send(services);
         });
 
+        // load a perticular services
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -36,20 +38,21 @@ async function run() {
             res.send(service);
         })
 
-        //add data
-
+        // send data to server
         app.post('/services', async (req, res) => {
             const oneservice = req.body;
             const result = await serviceCollection.insertOne(oneservice);
             res.send(result);
         })
 
+        //send review to server
         app.post('/reviews', async (req, res) => {
             const sendreview = req.body;
             const result = await reviewCollection.insertOne(sendreview);
             res.send(result);
         })
 
+        // get reviews from server
         app.get('/reviews', async (req, res) => {
             let query = {};
             if (req.query.email) {
@@ -63,7 +66,6 @@ async function run() {
         })
 
         // get id by reviews
-
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
             const query = { sid: id };
